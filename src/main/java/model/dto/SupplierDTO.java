@@ -7,9 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SupplierDto {
+public class SupplierDTO {
     private String id;
     private String name;
     private String address;
     private String contactInfo;
+    private enum status{active,deavtive}
 }

@@ -1,4 +1,4 @@
-package model.dto;
+package model.entity;
 
 import lombok.*;
 
@@ -7,8 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CustomerDto {
+public class Customer {
     private String id;
     private String name;
     private String contactInfo;
+    private enum status{active,deavtive}
 }

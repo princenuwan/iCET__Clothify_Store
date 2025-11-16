@@ -1,4 +1,4 @@
-package model.dto;
+package model.entity;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDto {
+public class Product {
     private String id;
     private String name;
     private String description;
@@ -18,4 +18,5 @@ public class ProductDto {
     private String barcode;
     private String categoryId;
     private LocalDateTime dateTime;
+    private enum status{active,deavtive}
 }

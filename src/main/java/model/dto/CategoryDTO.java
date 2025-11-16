@@ -7,9 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SaleDto {
+public class CategoryDTO {
     private String id;
-    private String userId;
-    private String customerId;
-    private String productId;
+    private String name;
+    private String description;
+    private enum status{active,deavtive}
 }

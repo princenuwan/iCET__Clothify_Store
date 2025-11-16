@@ -1,4 +1,4 @@
-package model.dto;
+package model.entity;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SaleItemDto {
+public class SaleItem {
     private String id;
     private String productId;
     private int quantity;

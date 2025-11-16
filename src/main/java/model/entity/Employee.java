@@ -1,4 +1,4 @@
-package model.dto;
+package model.entity;
 
 import lombok.*;
 
@@ -7,8 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CategoryDto {
+public class Employee {
     private String id;
     private String name;
-    private String description;
+    private String contactInfo;
+    private String address;
+    private String role;
+
 }

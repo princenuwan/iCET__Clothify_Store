@@ -1,6 +1,6 @@
 package model.dto;
 
-public class InvoiceDto {
+public class InvoiceDTO {
     private String id;
     private String saleId;
     private String saleItemId;
