@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,6 +14,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class DashboardController {
+
+    @FXML
+    private Button btnDashboard;
 
     @FXML
     private Button btnCatogeries;
@@ -42,6 +46,223 @@ public class DashboardController {
     private Button btnUsers;
 
     @FXML
+    void DashboardOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Dashboard - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @FXML
+    void CatogeriesOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/catogeries.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Categories - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void SupplierOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/suppliers.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Suppliers - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void ProductOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/products.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Product - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void CustomerOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/customers.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Customers - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void SalesOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/sales.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Sales - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void ReportsOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/reports.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Sales - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void PosOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/pos.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Sales - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void UserOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/users.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Sales - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
     void LogoutOnAction(ActionEvent event) {
 
         //confirmation dialog
@@ -64,9 +285,11 @@ public class DashboardController {
                 // Set login scene to the same stage
                 currentStage.setScene(loginScene);
                 currentStage.setTitle("Login - Clothify Store");
+                currentStage.centerOnScreen();
                 currentStage.show();
             } catch (IOException e) {
                 e.printStackTrace();
+
                 // Optionally show error alert
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("Failed to load login screen");
