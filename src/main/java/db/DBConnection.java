@@ -9,7 +9,7 @@ public class DBConnection {
     private Connection connection;
 
     private DBConnection() throws SQLException {
-        connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/clothify_store","root","1234");
+        connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/clothify_store","username","password");
     }
 
     public static DBConnection getInstance() throws SQLException {

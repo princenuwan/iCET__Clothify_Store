@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -30,6 +31,8 @@ public class LoginFormController {
        if ("Admin".equals(txtUsername.getText()) && "Admin#123".equals(txtPassword.getText())) {
            try {
                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"))));
+               Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+               loginStage.close();
            } catch (IOException e) {
                throw new RuntimeException(e);
            }
@@ -42,5 +45,4 @@ public class LoginFormController {
            alert.showAndWait();
        }
     }
-
 }
