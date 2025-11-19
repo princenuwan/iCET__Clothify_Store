@@ -1,7 +1,10 @@
 package model.enums;
 
 public enum Roles {
-    Admin,
-    Casheir,
-    Other
+    ADMIN,
+    MANAGER,
+    CASHIER,
+    SALES_ASSISTANT,
+    INVENTORY_MANAGER,
+    OTHER
 }

@@ -1,6 +1,8 @@
 package model.entity;
 
 import lombok.*;
+import model.enums.Roles;
+import model.enums.Status;
 
 @Getter
 @Setter
@@ -8,11 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class User {
-    private String Id;
+    private String id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
-    private enum role{admin,casheir,other};
-    private enum status{active,deavtive}
+    private Roles role;
+    private Status status;
 }
