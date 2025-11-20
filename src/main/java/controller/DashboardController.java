@@ -19,7 +19,7 @@ public class DashboardController {
     private Button btnDashboard;
 
     @FXML
-    private Button btnCatogeries;
+    private Button btnCategories;
 
     @FXML
     private Button btnCustomers;
@@ -71,10 +71,11 @@ public class DashboardController {
     }
 
     @FXML
-    void CatogeriesOnAction(ActionEvent event) {
+
+    void CategoriesOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/catogeries.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/categories.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
@@ -247,7 +248,7 @@ public class DashboardController {
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
             dashboardStage.setScene(new Scene(root));
-            dashboardStage.setTitle("Sales - Clothify Store");
+            dashboardStage.setTitle("Users - Clothify Store");
 
             // Center the dashboard window
             dashboardStage.centerOnScreen();
@@ -264,7 +265,6 @@ public class DashboardController {
 
     @FXML
     void LogoutOnAction(ActionEvent event) {
-
         //confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout Confirmation");
@@ -298,6 +298,5 @@ public class DashboardController {
             }
         }
     }
-
 }
 

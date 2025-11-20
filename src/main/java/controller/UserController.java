@@ -1,109 +1,190 @@
 package controller;
 
+import db.DBConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.dto.UserDTO;
 import model.enums.Roles;
 import model.enums.Status;
 
-import java.time.LocalDateTime;
+import java.net.URL;
+import java.sql.*;
+import java.util.ResourceBundle;
 
-public class UserController {
+public class UserController implements Initializable {
+    ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
 
-        @FXML
-        private Label btnAdd;
+    @FXML
+    private Label btnAddNew;
 
-        @FXML
-        private Button btnCatogeries;
+    @FXML
+    private Button btnCategories;
 
-        @FXML
-        private Button btnCustomers;
+    @FXML
+    private Button btnCustomers;
 
-        @FXML
-        private Button btnDashboard;
+    @FXML
+    private Button btnDashboard;
 
-        @FXML
-        private Button btnLogout;
+    @FXML
+    private Label btnDelete;
 
-        @FXML
-        private Button btnPOS;
+    @FXML
+    private Label btnEdit;
 
-        @FXML
-        private Button btnProducts;
+    @FXML
+    private Button btnLogout;
 
-        @FXML
-        private Button btnReports;
+    @FXML
+    private Button btnPOS;
 
-        @FXML
-        private Button btnSales;
+    @FXML
+    private Button btnProducts;
 
-        @FXML
-        private Button btnSuppliers;
+    @FXML
+    private Button btnReports;
 
-        @FXML
-        private Button btnUsers;
+    @FXML
+    private Button btnSales;
 
-        @FXML
-        private TableColumn<UserDTO, String> colFirstName;
+    @FXML
+    private Button btnSuppliers;
 
-        @FXML
-        private TableColumn<UserDTO, String> colId;
+    @FXML
+    private Button btnUsers;
 
-        @FXML
-        private TableColumn<UserDTO, String> colLastName;
+    @FXML
+    private Label btnViewReport;
 
-        @FXML
-        private TableColumn<UserDTO, String> colPassword;
+    @FXML
+    private TableColumn<?, ?> colFirstName;
 
-        @FXML
-        private TableColumn<UserDTO, Roles> colRole;
+    @FXML
+    private TableColumn<?, ?> colId;
 
-        @FXML
-        private TableColumn<UserDTO, Status> colStatus;
+    @FXML
+    private TableColumn<?, ?> colLastName;
 
-        @FXML
-        private TableColumn<UserDTO, LocalDateTime> colUserName;
+    @FXML
+    private TableColumn<?, ?> colPassword;
 
-        @FXML
-        private TableView<UserDTO> tblUser;
+    @FXML
+    private TableColumn<?, ?> colRole;
 
-        @FXML
-        void CatogeriesOnAction(ActionEvent event) {
+    @FXML
+    private TableColumn<?, ?> colStatus;
 
-        }
+    @FXML
+    private TableColumn<?, ?> colUserName;
 
-        @FXML
-        void DashboardOnAction(ActionEvent event) {
+    @FXML
+    private TableView<UserDTO> tblUser;
 
-        }
+    @FXML
+    private TextField txtFirstName;
 
-        @FXML
-        void LogoutOnAction(ActionEvent event) {
+    @FXML
+    private TextField txtLastName;
 
-        }
+    @FXML
+    private TextField txtPassword;
 
-        @FXML
-        void PosOnAction(ActionEvent event) {
+    @FXML
+    private TextField txtRole;
 
-        }
+    @FXML
+    private TextField txtStatus;
 
-        @FXML
-        void ProductOnAction(ActionEvent event) {
+    @FXML
+    private TextField txtUserId;
 
-        }
+    @FXML
+    private TextField txtUserName;
 
-        @FXML
-        void SalesOnAction(ActionEvent event) {
-
-        }
-
-        @FXML
-        void SupplierOnAction(ActionEvent event) {
-
-        }
+    @FXML
+    void DashboardOnAction(ActionEvent event) {
 
     }
+
+    @FXML
+    void CategoriesOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void PosOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ProductOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void RreportsOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void SalesOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void SupplierOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void LogoutOnAction(ActionEvent event) {
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users");
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                UserDTO userDTO = new UserDTO(
+                        resultSet.getString("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("password"),
+                        Roles.valueOf(resultSet.getString("role")),
+                        Status.valueOf(resultSet.getString("status")),
+                        resultSet.getTimestamp("created_at").toLocalDateTime(),
+                        resultSet.getTimestamp("updated_at").toLocalDateTime()
+                );
+                userDTOS.add(userDTO);
+                System.out.println(userDTO);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        tblUser.setItems(userDTOS);
+    }
+}
