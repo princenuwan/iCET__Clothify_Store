@@ -5,26 +5,30 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.dto.UserDTO;
 import model.enums.Roles;
 import model.enums.Status;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
-    ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
 
     @FXML
-    private Label btnAddNew;
+    private Button btnDashboard;
 
     @FXML
     private Button btnCategories;
@@ -33,25 +37,10 @@ public class UserController implements Initializable {
     private Button btnCustomers;
 
     @FXML
-    private Button btnDashboard;
-
-    @FXML
-    private Label btnDelete;
-
-    @FXML
-    private Label btnEdit;
-
-    @FXML
-    private Button btnLogout;
-
-    @FXML
     private Button btnPOS;
 
     @FXML
     private Button btnProducts;
-
-    @FXML
-    private Button btnReports;
 
     @FXML
     private Button btnSales;
@@ -63,7 +52,19 @@ public class UserController implements Initializable {
     private Button btnUsers;
 
     @FXML
-    private Label btnViewReport;
+    private Button btnLogout;
+
+    @FXML
+    private Button btnAddNew;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnEdit;
+
+    @FXML
+    private Button btnReports;
 
     @FXML
     private TableColumn<?, ?> colFirstName;
@@ -112,6 +113,26 @@ public class UserController implements Initializable {
 
     @FXML
     void DashboardOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Dashboard - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -131,11 +152,6 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void RreportsOnAction(ActionEvent event) {
-
-    }
-
-    @FXML
     void SalesOnAction(ActionEvent event) {
 
     }
@@ -146,10 +162,36 @@ public class UserController implements Initializable {
     }
 
     @FXML
+    void UsersOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
     void LogoutOnAction(ActionEvent event) {
 
     }
 
+    @FXML
+    void AddNewOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void DeleteOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void EditOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ViewReporstOnAction(ActionEvent event) {
+
+    }
+
+        ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -171,7 +213,6 @@ public class UserController implements Initializable {
                         resultSet.getTimestamp("updated_at").toLocalDateTime()
                 );
                 userDTOS.add(userDTO);
-                System.out.println(userDTO);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

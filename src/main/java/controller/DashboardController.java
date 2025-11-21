@@ -240,7 +240,7 @@ public class DashboardController {
     }
 
     @FXML
-    void UserOnAction(ActionEvent event) {
+    void UsersOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
             Parent root = FXMLLoader.load(getClass().getResource("/view/users.fxml"));
@@ -248,7 +248,7 @@ public class DashboardController {
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
             dashboardStage.setScene(new Scene(root));
-            dashboardStage.setTitle("Users - Clothify Store");
+            dashboardStage.setTitle("Dashboard - Clothify Store");
 
             // Center the dashboard window
             dashboardStage.centerOnScreen();
@@ -261,6 +261,7 @@ public class DashboardController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @FXML
