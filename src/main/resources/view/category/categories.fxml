@@ -173,71 +173,68 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="72.0">
                <children>
-                  <VBox prefHeight="400.0">
+                  <VBox>
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                      <children>
-                        <TableView fx:id="tblUser" prefHeight="382.0" prefWidth="1302.0">
+                        <TableView fx:id="tblUser" prefHeight="700.0" prefWidth="1302.0">
                           <columns>
-                            <TableColumn fx:id="colId" prefWidth="104.79998624324799" text="User Id" />
-                              <TableColumn fx:id="colFirstName" prefWidth="150.0" text="First name" />
-                              <TableColumn fx:id="colLastName" prefWidth="150.0" text="Last name" />
-                              <TableColumn fx:id="colUserName" prefWidth="150.0" text="User name" />
-                              <TableColumn fx:id="colPassword" prefWidth="129.59991455078125" text="Password" />
-                              <TableColumn fx:id="colRole" prefWidth="107.99993896484375" text="Role" />
-                              <TableColumn fx:id="colStatus" prefWidth="150.0" text="Status" />
+                            <TableColumn fx:id="colId" prefWidth="104.79998624324799" text="Catogery Id" />
+                              <TableColumn fx:id="colCatogery" prefWidth="150.0" text="Catogery" />
+                              <TableColumn fx:id="colDiscription" prefWidth="503.19989013671875" text="Discreption" />
+                              <TableColumn fx:id="colStatus" prefWidth="176.80010986328125" text="Status" />
                           </columns>
                         </TableView>
                         <HBox prefHeight="40.0">
                            <children>
-                              <Label fx:id="btnAdd" alignment="CENTER" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Add">
+                              <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Add New">
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="14.0" />
-                                 </font>
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
-                              </Label>
-                              <Label fx:id="btnAdd1" alignment="CENTER" layoutX="10.0" layoutY="15.0" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Edit">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
+                              </Button>
+                              <Button layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #42A5F5;" text="Edit">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                              </Label>
-                              <Label fx:id="btnAdd11" alignment="CENTER" layoutX="270.0" layoutY="15.0" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Delete">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="14.0" />
-                                 </font>
+                              </Button>
+                              <Button layoutX="115.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #EF4444;" text="Delete">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                              </Label>
-                              <Label alignment="CENTER" layoutX="30.0" layoutY="30.0" prefHeight="10.0" prefWidth="150.0" style="-fx-background-color: #10B981;" text="View report">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="14.0" />
-                                 </font>
+                              </Button>
+                              <Button layoutX="220.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #10B981;" text="View Report">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
                                  <HBox.margin>
-                                    <Insets top="5.0" />
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
-                              </Label>
+                              </Button>
                            </children>
                            <VBox.margin>
-                              <Insets />
+                              <Insets bottom="10.0" />
                            </VBox.margin>
                         </HBox>
                      </children>

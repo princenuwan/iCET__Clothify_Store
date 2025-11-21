@@ -1,6 +1,7 @@
 package model.entity;
 
 import lombok.*;
+import model.enums.Status;
 
 @Getter
 @Setter
@@ -12,5 +13,5 @@ public class Supplier {
     private String name;
     private String address;
     private String contactInfo;
-    private enum status{active,deavtive}
+    private Status status;
 }

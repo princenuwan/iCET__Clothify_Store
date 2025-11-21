@@ -75,7 +75,7 @@ public class DashboardController {
     void CategoriesOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/categories.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/category/categories.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
@@ -243,7 +243,7 @@ public class DashboardController {
     void UsersOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/users.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/user/user.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();

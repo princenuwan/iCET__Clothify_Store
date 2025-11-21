@@ -1,6 +1,8 @@
 package model.dto;
 
 import lombok.*;
+import model.enums.Roles;
+import model.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -14,5 +16,5 @@ public class CustomerDTO {
     private String name;
     private String contactInfo;
     private LocalDateTime dateTime;
-    private enum status{active,deavtive}
+    private Status status;
 }
