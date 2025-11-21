@@ -129,4 +129,41 @@ public class UserRepositoryImpl implements UserRepository {
         user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
         return user;
     }
+    @Override
+    public String getLastUserId() {
+        String sql = "SELECT id FROM users ORDER BY id DESC LIMIT 1";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getString("id"); // Example: "U0012"
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // If no records in table
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE user_name=?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return mapResultSetToUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

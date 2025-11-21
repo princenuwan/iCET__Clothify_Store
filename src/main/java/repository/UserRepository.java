@@ -13,4 +13,8 @@ public interface UserRepository{
 
     // Get all users
     List<User> findAll();
+    // to get last userid from db
+    String getLastUserId();
+
+    User findByUsername(String username);
 }

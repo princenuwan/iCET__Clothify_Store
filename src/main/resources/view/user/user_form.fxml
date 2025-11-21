@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #5A76A2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserFormController">
+   <children>
+      <BorderPane layoutY="7.0" prefHeight="450.0" prefWidth="400.0">
+         <top>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="User Form">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <bottom>
+            <HBox prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btnAddNew" mnemonicParsing="false" onAction="#AddNewOnAction" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #1E90FF;" text="Add new" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#EditOnAction" prefHeight="30.0" style="-fx-background-color: #10B981;" text="Edit">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#DeleteOnAction" prefHeight="30.0" style="-fx-background-color: #EF4444;" text="Delete">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnBack" mnemonicParsing="false" onAction="#BackOnAction" prefHeight="30.0" style="-fx-background-color: #374151;" text="Back" textFill="#fafafa">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnClear" layoutX="207.0" layoutY="15.0" mnemonicParsing="false" onAction="#ClearOnAction" prefHeight="30.0" style="-fx-background-color: #c70000;" text="Clear" textFill="#fafafa">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="txtUserId" promptText="User Id">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="txtFirstName" layoutX="10.0" layoutY="36.0" promptText="First Name">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="txtLastName" layoutX="10.0" layoutY="10.0" promptText="Last Name">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="txtUserName" layoutX="20.0" layoutY="61.0" promptText="User Name">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="txtPassword" layoutX="10.0" layoutY="87.0" promptText="Password Name">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="txtConfirmpassword" layoutX="10.0" layoutY="112.0" promptText="Confirm Password">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="cbRole" prefWidth="150.0" promptText="STAFF">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="cbStatus" prefWidth="150.0" promptText="ACTIVE">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
