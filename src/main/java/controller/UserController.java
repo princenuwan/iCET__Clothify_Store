@@ -351,13 +351,29 @@ public class UserController implements Initializable {
 
     @FXML
     void EditOnAction(ActionEvent event) {
+        UserDTO selectedUser = tblUser.getSelectionModel().getSelectedItem();
+
+        if (selectedUser == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a user to edit!").show();
+            return;
+        }
+
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/user/user_form.fxml"))));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/user_form.fxml"));
+            Parent root = loader.load();
+
+            // Get controller of the form
+            UserFormController controller = loader.getController();
+            controller.setUserData(selectedUser);
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stage.show();
     }
+
     @FXML
     void DeleteOnAction(ActionEvent event) {
         try {

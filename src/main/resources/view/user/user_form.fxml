@@ -37,7 +37,7 @@
                         <Insets bottom="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#EditOnAction" prefHeight="30.0" style="-fx-background-color: #10B981;" text="Edit">
+                  <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#FormEditOnAction" prefHeight="30.0" style="-fx-background-color: #10B981;" text="Edit">
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -45,7 +45,7 @@
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#DeleteOnAction" prefHeight="30.0" style="-fx-background-color: #EF4444;" text="Delete">
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#FormDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #EF4444;" text="Delete">
                      <HBox.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />
                      </HBox.margin>

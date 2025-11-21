@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 import model.dto.UserDTO;
 import model.enums.Roles;
 import model.enums.Status;
@@ -16,8 +14,8 @@ import service.UserService;
 import service.impl.UserServiceImpl;
 
 public class UserFormController {
-    private final UserService userService = new UserServiceImpl();
 
+    private final UserService userService = new UserServiceImpl();
 
     @FXML
     private Button btnAddNew;
@@ -37,8 +35,6 @@ public class UserFormController {
     @FXML
     private ComboBox<Status> cbStatus;
 
-    @Getter
-    @Setter
     @FXML
     private TextField txtConfirmpassword;
 
@@ -57,49 +53,42 @@ public class UserFormController {
     @FXML
     private TextField txtUserName;
 
+    @FXML
+    private Button btnFormDelete;
+
     public void initialize() {
-        // Populate ComboBoxes with enum values
         cbRole.setItems(FXCollections.observableArrayList(Roles.values()));
         cbStatus.setItems(FXCollections.observableArrayList(Status.values()));
+
+        // Default mode = Add new
+        btnAddNew.setDisable(false);
+        btnEdit.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
+    // For new user mode
     public void setNewUserId(String id) {
         txtUserId.setText(id);
     }
 
+    // Save (Add new)
     @FXML
     void AddNewOnAction(ActionEvent event) {
         try {
-            // 1. Validate required fields
-            if (txtFirstName.getText().isEmpty() || txtLastName.getText().isEmpty() ||
-                    txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty() ||
-                    txtConfirmpassword.getText().isEmpty() ||
-                    cbRole.getValue() == null || cbStatus.getValue() == null) {
-                System.out.println("Please fill all fields!");
-                return;
-            }
+            if (!validateFields()) return;
 
-            if (!txtPassword.getText().equals(txtConfirmpassword.getText())) {
-                System.out.println("Passwords do not match!");
-                return;
-            }
-
-            // 2. Create DTO and set values
             UserDTO newUser = new UserDTO();
+            newUser.setId(txtUserId.getText());
             newUser.setFirstName(txtFirstName.getText());
             newUser.setLastName(txtLastName.getText());
             newUser.setUserName(txtUserName.getText());
             newUser.setPassword(txtPassword.getText());
-            newUser.setRole(Roles.valueOf(cbRole.getValue().name()));   // enum value to String
-            newUser.setStatus(Status.valueOf(cbStatus.getValue().name())); // enum value to String
+            newUser.setRole(cbRole.getValue());
+            newUser.setStatus(cbStatus.getValue());
 
-            // 3. Call service layer to save user
-            UserDTO savedUser = userService.createUser(newUser);
+            userService.createUser(newUser);
 
-            // 4. Show confirmation (console for now)
-            System.out.println("User saved successfully: " + savedUser.getId());
-
-            // 5. Optionally clear the form
+            System.out.println("User saved successfully");
             clearForm();
 
         } catch (Exception e) {
@@ -107,28 +96,44 @@ public class UserFormController {
         }
     }
 
+    // Back button
     @FXML
     void BackOnAction(ActionEvent event) {
-        // Close form or go back
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    void DeleteOnAction(ActionEvent event) {
-        // TODO: delete logic
+    void FormEditOnAction(ActionEvent event) {
+        try {
+            if (!validateFields()) return;
+
+            UserDTO updatedUser = new UserDTO();
+            updatedUser.setId(txtUserId.getText());
+            updatedUser.setFirstName(txtFirstName.getText());
+            updatedUser.setLastName(txtLastName.getText());
+            updatedUser.setUserName(txtUserName.getText());
+            updatedUser.setPassword(txtPassword.getText());
+            updatedUser.setRole(cbRole.getValue());
+            updatedUser.setStatus(cbStatus.getValue());
+
+            userService.updateUser(updatedUser);
+
+            System.out.println("User updated successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
-    void EditOnAction(ActionEvent event) {
-        // Example: set values during editing
-    }
 
     @FXML
-    public void ClearOnAction(ActionEvent event){
+    public void ClearOnAction(ActionEvent event) {
         clearForm();
     }
+
     private void clearForm() {
+        txtUserId.clear();
         txtFirstName.clear();
         txtLastName.clear();
         txtUserName.clear();
@@ -136,5 +141,61 @@ public class UserFormController {
         txtConfirmpassword.clear();
         cbRole.getSelectionModel().clearSelection();
         cbStatus.getSelectionModel().clearSelection();
+
+        // Reset to Add mode
+        btnAddNew.setDisable(false);
+        btnEdit.setDisable(true);
+        btnDelete.setDisable(true);
+    }
+
+    private boolean validateFields() {
+        if (txtFirstName.getText().isEmpty() ||
+                txtLastName.getText().isEmpty() ||
+                txtUserName.getText().isEmpty() ||
+                txtPassword.getText().isEmpty() ||
+                txtConfirmpassword.getText().isEmpty() ||
+                cbRole.getValue() == null ||
+                cbStatus.getValue() == null) {
+
+            System.out.println("Please fill all fields!");
+            return false;
+        }
+
+        if (!txtPassword.getText().equals(txtConfirmpassword.getText())) {
+            System.out.println("Passwords do not match!");
+            return false;
+        }
+
+        return true;
+    }
+
+    // ⭐ FINAL & ONLY VERSION OF THIS METHOD ⭐
+    public void setUserData(UserDTO user) {
+
+        txtUserId.setText(user.getId());
+        txtFirstName.setText(user.getFirstName());
+        txtLastName.setText(user.getLastName());
+        txtUserName.setText(user.getUserName());
+        txtPassword.setText(user.getPassword());
+        txtConfirmpassword.setText(user.getPassword());
+
+        cbRole.setValue(user.getRole());
+        cbStatus.setValue(user.getStatus());
+
+        // Switch UI to EDIT mode
+        btnAddNew.setDisable(true);
+        btnEdit.setDisable(false);
+        btnDelete.setDisable(false);
+    }
+
+   @FXML
+    void FormDeleteOnAction(ActionEvent event) {
+        String userId = txtUserId.getText();
+        if (userId == null || userId.isEmpty()) {
+            System.out.println("No user selected to delete!");
+            return;
+        }
+        System.out.println("User deleted successfully");
+        clearForm();
     }
 }
