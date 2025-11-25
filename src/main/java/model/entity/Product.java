@@ -1,6 +1,7 @@
 package model.entity;
 
 import lombok.*;
+import model.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -18,5 +19,5 @@ public class Product {
     private String barcode;
     private String categoryId;
     private LocalDateTime dateTime;
-    private enum status{active,deavtive}
+    private Status status;
 }

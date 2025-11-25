@@ -1,19 +1,34 @@
-package controller;
+package controller.userController;
 
+import db.DBConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.util.Optional;
+import model.dto.UserDTO;
+import model.enums.Roles;
+import model.enums.Status;
 
-public class DashboardController {
+import java.io.IOException;
+import java.net.URL;
+import java.sql.*;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import service.UserService;
+import service.impl.UserServiceImpl;
+
+
+public class UserController implements Initializable {
+
+    private final UserService userService = new UserServiceImpl();
 
     @FXML
     private Button btnDashboard;
@@ -25,16 +40,10 @@ public class DashboardController {
     private Button btnCustomers;
 
     @FXML
-    private Button btnLogout;
-
-    @FXML
     private Button btnPOS;
 
     @FXML
     private Button btnProducts;
-
-    @FXML
-    private Button btnReports;
 
     @FXML
     private Button btnSales;
@@ -44,6 +53,50 @@ public class DashboardController {
 
     @FXML
     private Button btnUsers;
+
+    @FXML
+    private Button btnBtnReports;
+
+    @FXML
+    private Button btnLogout;
+
+    @FXML
+    private Button btnAddNew;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnEdit;
+
+    @FXML
+    private Button btnReports;
+
+    @FXML
+    private TableColumn<?, ?> colFirstName;
+
+    @FXML
+    private TableColumn<?, ?> colId;
+
+    @FXML
+    private TableColumn<?, ?> colLastName;
+
+    @FXML
+    private TableColumn<?, ?> colPassword;
+
+    @FXML
+    private TableColumn<?, ?> colRole;
+
+    @FXML
+    private TableColumn<?, ?> colStatus;
+
+    @FXML
+    private TableColumn<?, ?> colUserName;
+
+    @FXML
+    private TableView<UserDTO> tblUser;
+
+    Stage stage = new Stage();
 
     @FXML
     void DashboardOnAction(ActionEvent event) {
@@ -71,7 +124,6 @@ public class DashboardController {
     }
 
     @FXML
-
     void CategoriesOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
@@ -96,7 +148,31 @@ public class DashboardController {
     }
 
     @FXML
-    void SupplierOnAction(ActionEvent event) {
+    void ReportsOnAction(ActionEvent event) {
+        try {
+            // Load Dashboard UI
+            Parent root = FXMLLoader.load(getClass().getResource("/view/reports.fxml"));
+
+            // Create a new stage for Dashboard
+            Stage dashboardStage = new Stage();
+            dashboardStage.setScene(new Scene(root));
+            dashboardStage.setTitle("Sales - Clothify Store");
+
+            // Center the dashboard window
+            dashboardStage.centerOnScreen();
+            dashboardStage.show();
+
+            // Close the previous window (login screen)
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void PosOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
             Parent root = FXMLLoader.load(getClass().getResource("/view/supplier/suppliers.fxml"));
@@ -144,7 +220,7 @@ public class DashboardController {
     }
 
     @FXML
-    void CustomerOnAction(ActionEvent event) {
+    void CustomerOnAction(ActionEvent event){
         try {
             // Load Dashboard UI
             Parent root = FXMLLoader.load(getClass().getResource("/view/customers.fxml"));
@@ -192,34 +268,10 @@ public class DashboardController {
     }
 
     @FXML
-    void ReportsOnAction(ActionEvent event) {
+    void SupplierOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/reports.fxml"));
-
-            // Create a new stage for Dashboard
-            Stage dashboardStage = new Stage();
-            dashboardStage.setScene(new Scene(root));
-            dashboardStage.setTitle("Sales - Clothify Store");
-
-            // Center the dashboard window
-            dashboardStage.centerOnScreen();
-            dashboardStage.show();
-
-            // Close the previous window (login screen)
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    void PosOnAction(ActionEvent event) {
-        try {
-            // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/pos.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/sales.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
@@ -241,27 +293,7 @@ public class DashboardController {
 
     @FXML
     void UsersOnAction(ActionEvent event) {
-        try {
-            // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/user/user.fxml"));
-
-            // Create a new stage for Dashboard
-            Stage dashboardStage = new Stage();
-            dashboardStage.setScene(new Scene(root));
-            dashboardStage.setTitle("Dashboard - Clothify Store");
-
-            // Center the dashboard window
-            dashboardStage.centerOnScreen();
-            dashboardStage.show();
-
-            // Close the previous window (login screen)
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+            //no need to reload
     }
 
     @FXML
@@ -299,5 +331,119 @@ public class DashboardController {
             }
         }
     }
-}
 
+    @FXML
+    void AddNewOnAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/user_form.fxml"));
+            Parent root = loader.load();
+
+            UserFormController controller = loader.getController();
+            controller.setNewUserId(userService.generateUserId());
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void EditOnAction(ActionEvent event) {
+        UserDTO selectedUser = tblUser.getSelectionModel().getSelectedItem();
+
+        if (selectedUser == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a user to edit!").show();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/user_form.fxml"));
+            Parent root = loader.load();
+
+            // Get controller of the form
+            UserFormController controller = loader.getController();
+            controller.setUserData(selectedUser);
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void ViewReporstOnAction(ActionEvent event) {
+        System.out.println("You have to develop...");
+    }
+
+    ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users");
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                UserDTO userDTO = new UserDTO(
+                        resultSet.getString("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("password"),
+                        Roles.valueOf(resultSet.getString("role")),
+                        Status.valueOf(resultSet.getString("status")),
+                        resultSet.getTimestamp("created_at").toLocalDateTime(),
+                        resultSet.getTimestamp("updated_at").toLocalDateTime()
+                );
+                userDTOS.add(userDTO);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colUserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        tblUser.setItems(userDTOS);
+    }
+
+    public void loadUserTable() {
+        userDTOS.clear();
+
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users");
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                UserDTO userDTO = new UserDTO(
+                        resultSet.getString("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("password"),
+                        Roles.valueOf(resultSet.getString("role")),
+                        Status.valueOf(resultSet.getString("status")),
+                        resultSet.getTimestamp("created_at").toLocalDateTime(),
+                        resultSet.getTimestamp("updated_at").toLocalDateTime()
+                );
+                userDTOS.add(userDTO);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        tblUser.refresh();
+    }
+}

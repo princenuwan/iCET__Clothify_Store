@@ -1,6 +1,7 @@
 package model.dto;
 
 import lombok.*;
+import model.enums.Status;
 
 @Getter
 @Setter
@@ -11,5 +12,5 @@ public class CategoryDTO {
     private String id;
     private String name;
     private String description;
-    private enum status{active,deavtive}
+    private Status status;
 }
