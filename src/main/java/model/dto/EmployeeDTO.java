@@ -1,6 +1,7 @@
 package model.dto;
 
 import lombok.*;
+import model.enums.Roles;
 
 @Getter
 @Setter
@@ -12,6 +13,5 @@ public class EmployeeDTO {
     private String name;
     private String contactInfo;
     private String address;
-    private String role;
-
+    private Roles role;
 }

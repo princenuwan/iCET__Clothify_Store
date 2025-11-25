@@ -1,5 +1,6 @@
 package service.impl;
 
+import db.DBConnection;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import model.dto.UserDTO;
@@ -8,6 +9,10 @@ import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +20,39 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository = new UserRepositoryImpl();
-    private int lastUserNumber = 0;
+    private int lastUserNumber = getLastUserNumberFromDB();
 
-    private String generateUserId(){
-        lastUserNumber++;
-        return String.format("U%04d", lastUserNumber);
+    private int getLastUserNumberFromDB() {
+        String sql = "SELECT id FROM users ORDER BY id DESC LIMIT 1";
+
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement pst = connection.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            if (rs.next()) {
+                String lastId = rs.getString("id");  // Example: U0011
+                return Integer.parseInt(lastId.substring(1)); // extract 0011 → 11
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // If no users yet → start from U0001
+    }
+
+    @Override
+    public String generateUserId(){
+        String lastId = userRepository.getLastUserId();
+
+        if (lastId == null) {
+            return "U0001";
+        }
+
+        // remove 'U'
+        int lastNumber = Integer.parseInt(lastId.substring(1));
+        lastNumber++;
+
+        return String.format("U%04d", lastNumber);
     }
 
     private User dtoToEntity(UserDTO dto){
@@ -30,6 +63,7 @@ public class UserServiceImpl implements UserService {
         entity.setUserName(dto.getUserName());
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
+        entity.setStatus(dto.getStatus());
         entity.setCreatedAt(dto.getCreatedAt());
         entity.setUpdatedAt(dto.getUpdatedAt());
         return entity;
@@ -43,8 +77,9 @@ public class UserServiceImpl implements UserService {
         dto.setUserName(entity.getUserName());
         dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
-        dto.setCreatedAt(dto.getCreatedAt());
-        dto.setUpdatedAt(dto.getUpdatedAt());
+        //dto.setStatus(entity.getStatus());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
         return dto;
     }
 
@@ -72,10 +107,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ObservableList<UserDTO> getAllUsers() {
-        List<UserDTO> dtoList =  userRepository.FindAll()
+        List<UserDTO> dtoList =  userRepository.findAll()
                 .stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList());
         return FXCollections.observableArrayList(dtoList);
     }
+
+    @Override
+    public UserDTO getUserByUsername(String username) {
+        User entity = userRepository.findByUsername(username);
+        return entity != null ? entityToDTO(entity) : null;
+    }
+
 }

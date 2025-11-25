@@ -1,6 +1,7 @@
 package model.entity;
 
 import lombok.*;
+import model.enums.Status;
 
 @Getter
 @Setter
@@ -12,6 +13,5 @@ public class Employee {
     private String name;
     private String contactInfo;
     private String address;
-    private String role;
-
+    private Status role;
 }
