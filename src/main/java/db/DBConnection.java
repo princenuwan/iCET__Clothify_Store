@@ -27,6 +27,7 @@ public class DBConnection {
         return instance;
     }
 
+    //test git merge
     public Connection getConnection() {
         return connection;
     }
