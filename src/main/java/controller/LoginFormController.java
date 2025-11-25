@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import model.dto.UserDTO;
 import service.UserService;
 import service.impl.UserServiceImpl;
-
 import java.io.IOException;
 
 public class LoginFormController {

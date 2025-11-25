@@ -1,4 +1,4 @@
-package controller;
+package controller.userController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,27 +37,27 @@ public class CategoryFormController {
     private TextField txtUserId;
 
     @FXML
-    void AddNewOnAction(ActionEvent event) {
+    void btnAddNewOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void BackOnAction(ActionEvent event) {
+    void btnBackOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void ClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void DeleteOnAction(ActionEvent event) {
+    void btnDeleteOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void EditOnAction(ActionEvent event) {
+    void btnEditOnAction(ActionEvent event) {
 
     }
 

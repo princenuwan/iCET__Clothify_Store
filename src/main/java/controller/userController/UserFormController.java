@@ -1,11 +1,9 @@
-package controller;
+package controller.userController;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.dto.UserDTO;
 import model.enums.Roles;
@@ -13,9 +11,12 @@ import model.enums.Status;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
+import java.util.Optional;
+
 public class UserFormController {
 
     private final UserService userService = new UserServiceImpl();
+    private UserController parentController;
 
     @FXML
     private Button btnAddNew;
@@ -24,10 +25,13 @@ public class UserFormController {
     private Button btnBack;
 
     @FXML
+    private Button btnEdit;
+
+    @FXML
     private Button btnDelete;
 
     @FXML
-    private Button btnEdit;
+    private Button btnClear;
 
     @FXML
     private ComboBox<Roles> cbRole;
@@ -53,8 +57,6 @@ public class UserFormController {
     @FXML
     private TextField txtUserName;
 
-    @FXML
-    private Button btnFormDelete;
 
     public void initialize() {
         cbRole.setItems(FXCollections.observableArrayList(Roles.values()));
@@ -66,6 +68,7 @@ public class UserFormController {
         btnDelete.setDisable(true);
     }
 
+
     // For new user mode
     public void setNewUserId(String id) {
         txtUserId.setText(id);
@@ -73,7 +76,7 @@ public class UserFormController {
 
     // Save (Add new)
     @FXML
-    void AddNewOnAction(ActionEvent event) {
+    void btnAddOnAction(ActionEvent event) {
         try {
             if (!validateFields()) return;
 
@@ -86,10 +89,15 @@ public class UserFormController {
             newUser.setRole(cbRole.getValue());
             newUser.setStatus(cbStatus.getValue());
 
-            userService.createUser(newUser);
+            UserDTO savedUser = userService.createUser(newUser);
 
-            System.out.println("User saved successfully");
-            clearForm();
+            if (savedUser != null) {
+                if (parentController != null) {
+                    parentController.loadUserTable(); // refresh table
+                }
+                clearForm();
+                ((Stage) btnAddNew.getScene().getWindow()).close(); // auto close
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,13 +106,13 @@ public class UserFormController {
 
     // Back button
     @FXML
-    void BackOnAction(ActionEvent event) {
+    void btnBackOnAction(ActionEvent event) {
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    void FormEditOnAction(ActionEvent event) {
+    void btnEditOnAction(ActionEvent event) {
         try {
             if (!validateFields()) return;
 
@@ -118,7 +126,6 @@ public class UserFormController {
             updatedUser.setStatus(cbStatus.getValue());
 
             userService.updateUser(updatedUser);
-
             System.out.println("User updated successfully");
 
         } catch (Exception e) {
@@ -128,7 +135,7 @@ public class UserFormController {
 
 
     @FXML
-    public void ClearOnAction(ActionEvent event) {
+    public void btnClearOnAction(ActionEvent event) {
         clearForm();
     }
 
@@ -189,13 +196,7 @@ public class UserFormController {
     }
 
    @FXML
-    void FormDeleteOnAction(ActionEvent event) {
-        String userId = txtUserId.getText();
-        if (userId == null || userId.isEmpty()) {
-            System.out.println("No user selected to delete!");
-            return;
-        }
-        System.out.println("User deleted successfully");
-        clearForm();
-    }
+    void btnDeleteOnAction(ActionEvent event) {
+        System.out.println("Delete");
+   }
 }

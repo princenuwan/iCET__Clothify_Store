@@ -9,25 +9,18 @@ public class DBConnection {
     private static DBConnection instance;
     private Connection connection;
 
-    private final String URL = "jdbc:mysql://localhost:3306/clothify_store";
-    private final String USER = "root";       // Replace with your DB username
-    private final String PASSWORD = "1234";   // Replace with your DB password
-
-    // Private constructor
     private DBConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL driver
-            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/clothify_store", "root", "1234");
         } catch (ClassNotFoundException e) {
             throw new SQLException("MySQL Driver not found", e);
         }
     }
 
-    // Singleton instance getter
+    // Singleton instance
     public static DBConnection getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new DBConnection();
-        } else if (instance.getConnection().isClosed()) {
+        if (instance == null || instance.getConnection().isClosed()) {
             instance = new DBConnection();
         }
         return instance;

@@ -2,6 +2,7 @@ package repository.impl;
 
 import model.entity.User;
 import model.enums.Roles;
+import model.enums.Status;
 import repository.UserRepository;
 import db.DBConnection;
 
@@ -10,11 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
+    // map ResultSet to User entity
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getString("id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setUserName(rs.getString("user_name"));
+        user.setPassword(rs.getString("password"));
 
-    // Save user to database
+        String roleStr = rs.getString("role");
+        user.setRole(roleStr != null ? Roles.valueOf(roleStr) : Roles.STAFF);
+
+        String statusStr = rs.getString("status");
+        user.setStatus(statusStr != null ? Status.valueOf(statusStr) : Status.ACTIVE);
+
+        //these data taking from device
+        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+        return user;
+    }
+    // Save users to DB
     @Override
     public User save(User user) {
-        String sql = "INSERT INTO users (id, first_name, last_name, user_name, password, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (id, first_name, last_name, user_name, password, role, status, created_at, updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,11 +46,14 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getUserName());
             stmt.setString(5, user.getPassword());
             stmt.setString(6, user.getRole().name());
-            stmt.setTimestamp(7, Timestamp.valueOf(user.getCreatedAt()));
-            stmt.setTimestamp(8, Timestamp.valueOf(user.getUpdatedAt()));
+            stmt.setString(7, user.getStatus().name()); // ✔ correct for enum
+            stmt.setTimestamp(8, Timestamp.valueOf(user.getCreatedAt()));
+            stmt.setTimestamp(9, Timestamp.valueOf(user.getUpdatedAt()));
 
-            stmt.executeUpdate();
-            return user;
+            int affected = stmt.executeUpdate();
+            if (affected > 0) {
+                return user;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,7 +61,7 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
-    // Update existing user
+    // Update existing user on DB
     @Override
     public User update(User user) {
         String sql = "UPDATE users SET first_name=?, last_name=?, user_name=?, password=?, role=?, updated_at=? WHERE id=?";
@@ -51,7 +75,7 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getPassword());
             stmt.setString(5, user.getRole().name());
             stmt.setTimestamp(6, Timestamp.valueOf(user.getUpdatedAt()));
-            stmt.setString(7, user.getId());
+            stmt.setString(7, user.getStatus().name());
 
             stmt.executeUpdate();
             return user;
@@ -62,12 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
-    @Override
-    public User findById(User user) {
-        return null;
-    }
-
-    // Find user by ID
+    // Find user by ID on DB
     @Override
     public User findById(String id) {
         String sql = "SELECT * FROM users WHERE id=?";
@@ -88,12 +107,7 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
-    @Override
-    public List<User> FindAll() {
-        return List.of();
-    }
-
-    // Get all users
+    // Get all users from DB
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -113,22 +127,6 @@ public class UserRepositoryImpl implements UserRepository {
         return users;
     }
 
-    // Helper: map ResultSet to User entity
-    private User mapResultSetToUser(ResultSet rs) throws SQLException {
-        User user = new User();
-        user.setId(rs.getString("id"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setLastName(rs.getString("last_name"));
-        user.setUserName(rs.getString("user_name"));
-        user.setPassword(rs.getString("password"));
-
-        String roleStr = rs.getString("role");
-        user.setRole(Roles.valueOf(roleStr));
-
-        user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        return user;
-    }
     @Override
     public String getLastUserId() {
         String sql = "SELECT id FROM users ORDER BY id DESC LIMIT 1";
@@ -164,6 +162,5 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return null;
     }
-
 
 }

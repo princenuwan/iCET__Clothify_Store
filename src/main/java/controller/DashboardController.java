@@ -99,7 +99,7 @@ public class DashboardController {
     void SupplierOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/suppliers.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/supplier/suppliers.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();

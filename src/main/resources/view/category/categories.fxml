@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.categoryController.CategoryController">
    <top>
       <HBox alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #33435D;" BorderPane.alignment="CENTER">
          <children>
@@ -188,7 +188,7 @@
                         </TableView>
                         <HBox prefHeight="40.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Add New">
+                              <Button fx:id="btnAddNew" mnemonicParsing="false" onAction="#AddNewOnAction" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #1E90FF;" text="Add New">
                                  <HBox.margin>
                                     <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
@@ -199,7 +199,7 @@
                                     <Font name="Arial Rounded MT Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="10.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #42A5F5;" text="Edit">
+                              <Button fx:id="btnEdit" layoutX="10.0" layoutY="15.0" mnemonicParsing="false" onAction="#EditOnAction" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #42A5F5;" text="Edit">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -210,18 +210,7 @@
                                     <Insets bottom="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button layoutX="115.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #EF4444;" text="Delete">
-                                 <padding>
-                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                 </padding>
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="14.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button layoutX="220.0" layoutY="15.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #10B981;" text="View Report">
+                              <Button fx:id="btnViewReport" layoutX="220.0" layoutY="15.0" mnemonicParsing="false" onAction="#ViewReportsOnAction" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #10B981;" text="View Report">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>

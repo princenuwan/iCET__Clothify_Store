@@ -1,4 +1,4 @@
-package controller;
+package controller.userController;
 
 import db.DBConnection;
 import javafx.collections.FXCollections;
@@ -175,7 +175,7 @@ public class UserController implements Initializable {
     void PosOnAction(ActionEvent event) {
         try {
             // Load Dashboard UI
-            Parent root = FXMLLoader.load(getClass().getResource("/view/suppliers.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/supplier/suppliers.fxml"));
 
             // Create a new stage for Dashboard
             Stage dashboardStage = new Stage();
@@ -293,7 +293,7 @@ public class UserController implements Initializable {
 
     @FXML
     void UsersOnAction(ActionEvent event) {
-
+            //no need to reload
     }
 
     @FXML
@@ -375,21 +375,11 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void DeleteOnAction(ActionEvent event) {
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/user/user_form.fxml"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.show();
-    }
-
-    @FXML
     void ViewReporstOnAction(ActionEvent event) {
         System.out.println("You have to develop...");
     }
 
-        ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
+    ObservableList <UserDTO> userDTOS = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -425,5 +415,35 @@ public class UserController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         tblUser.setItems(userDTOS);
+    }
+
+    public void loadUserTable() {
+        userDTOS.clear();
+
+        try {
+            Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users");
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                UserDTO userDTO = new UserDTO(
+                        resultSet.getString("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("password"),
+                        Roles.valueOf(resultSet.getString("role")),
+                        Status.valueOf(resultSet.getString("status")),
+                        resultSet.getTimestamp("created_at").toLocalDateTime(),
+                        resultSet.getTimestamp("updated_at").toLocalDateTime()
+                );
+                userDTOS.add(userDTO);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        tblUser.refresh();
     }
 }

@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
             return "U0001";
         }
 
-        int lastNumber = Integer.parseInt(lastId.substring(1)); // remove 'U'
+        // remove 'U'
+        int lastNumber = Integer.parseInt(lastId.substring(1));
         lastNumber++;
 
         return String.format("U%04d", lastNumber);
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
         entity.setUserName(dto.getUserName());
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
+        entity.setStatus(dto.getStatus());
         entity.setCreatedAt(dto.getCreatedAt());
         entity.setUpdatedAt(dto.getUpdatedAt());
         return entity;
@@ -75,6 +77,7 @@ public class UserServiceImpl implements UserService {
         dto.setUserName(entity.getUserName());
         dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
+        //dto.setStatus(entity.getStatus());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setUpdatedAt(entity.getUpdatedAt());
         return dto;
@@ -104,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ObservableList<UserDTO> getAllUsers() {
-        List<UserDTO> dtoList =  userRepository.FindAll()
+        List<UserDTO> dtoList =  userRepository.findAll()
                 .stream()
                 .map(this::entityToDTO)
                 .collect(Collectors.toList());
