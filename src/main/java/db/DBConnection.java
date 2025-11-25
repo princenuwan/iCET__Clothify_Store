@@ -16,7 +16,7 @@ public class DBConnection {
         } catch (ClassNotFoundException e) {
             throw new SQLException("MySQL Driver not found", e);
         }
-        connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/clothify_store","username","password");
+        connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/clothify_store","root","1234");
     }
 
     // Singleton instance
