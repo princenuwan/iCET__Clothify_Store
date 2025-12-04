@@ -1,123 +1,127 @@
 package service.impl;
 
-import db.DBConnection;
-import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import model.dto.UserDTO;
 import model.entity.User;
+import model.enums.Roles;
+import model.enums.Status;
+import model.mapper.UserMapper;
 import repository.UserRepository;
 import repository.impl.UserRepositoryImpl;
 import service.UserService;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository = new UserRepositoryImpl();
-    private int lastUserNumber = getLastUserNumberFromDB();
+    UserRepository userRepository = new UserRepositoryImpl();
 
-    private int getLastUserNumberFromDB() {
-        String sql = "SELECT id FROM users ORDER BY id DESC LIMIT 1";
-
-        try (Connection connection = DBConnection.getInstance().getConnection();
-             PreparedStatement pst = connection.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-
-            if (rs.next()) {
-                String lastId = rs.getString("id");  // Example: U0011
-                return Integer.parseInt(lastId.substring(1)); // extract 0011 → 11
+    @Override
+    public ObservableList<UserDTO> getAll() {
+        ObservableList<UserDTO> userObservableList = FXCollections.observableArrayList();
+        try {
+            ResultSet rS = userRepository.getAll();
+            while (rS.next()){
+                userObservableList.add(new UserDTO(
+                        rS.getString("id"),
+                        rS.getString("first_name"),
+                        rS.getString("last_name"),
+                        rS.getString("user_name"),
+                        rS.getString("password"),
+                        Roles.valueOf(rS.getString("role")),
+                        Status.valueOf(rS.getString("status")),
+                        rS.getTimestamp("created_at").toLocalDateTime(),
+                        rS.getTimestamp("updated_at").toLocalDateTime()
+                    )
+                );
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return 0; // If no users yet → start from U0001
+        return userObservableList;
     }
 
     @Override
-    public String generateUserId(){
-        String lastId = userRepository.getLastUserId();
+    public void addUser(UserDTO dto) throws SQLException {
+        User entity = UserMapper.toEntity(dto);
+        userRepository.addUser(entity);
+    }
 
-        if (lastId == null) {
-            return "U0001";
+    @Override
+    public void deleteUser(String id)  {
+        Connection connection = null;
+        try {
+            userRepository.deleteUser(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateUser(UserDTO dto) throws SQLException {
+        User entity = UserMapper.toEntity(dto);
+        userRepository.updateUser(entity);
+    }
+
+    @Override
+    public UserDTO searchUser(String id) {
+        try {
+            ResultSet rS = userRepository.searchUser(id);
+            if (!rS.next()) {
+                new Alert(Alert.AlertType.ERROR, "User ID not found").show();
+                return null;
+            }
+            rS.next();
+            return new UserDTO(
+                    rS.getString("id"),
+                    rS.getString("first_name"),
+                    rS.getString("last_name"),
+                    rS.getString("user_name"),
+                    rS.getString("password"),
+                    Roles.valueOf(rS.getString("role")),
+                    Status.valueOf(rS.getString("status")),
+                    rS.getTimestamp("created_at").toLocalDateTime(),
+                    rS.getTimestamp("updated_at").toLocalDateTime()
+            );
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "This User id not in DataBase");
+            alert.show();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public UserDTO getUserByUsername(String userName) throws SQLException {
+        User user = userRepository.findByUsername(userName);
+        if (user == null) return null;
+
+        return new UserDTO(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUserName(),
+                user.getPassword(),
+                user.getRole(),
+                user.getStatus(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+    }
+
+    @Override
+    public String generateNextUserId() throws SQLException {
+        String lastId = userRepository.getLastId(); // eg: USR005
+
+        if (lastId == null || lastId.isBlank() || !lastId.startsWith("U")) {
+            return "U001";
         }
 
-        // remove 'U'
-        int lastNumber = Integer.parseInt(lastId.substring(1));
-        lastNumber++;
-
-        return String.format("U%04d", lastNumber);
+        int num = Integer.parseInt(lastId.substring(3)); // remove "USR"
+        num++;
+        return String.format("U%04d", num);
     }
-
-    private User dtoToEntity(UserDTO dto){
-        User entity = new User();
-        entity.setId(dto.getId());
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
-        entity.setUserName(dto.getUserName());
-        entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
-        entity.setStatus(dto.getStatus());
-        entity.setCreatedAt(dto.getCreatedAt());
-        entity.setUpdatedAt(dto.getUpdatedAt());
-        return entity;
-    }
-
-    private UserDTO entityToDTO(User entity){
-        UserDTO dto = new UserDTO();
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setUserName(entity.getUserName());
-        dto.setPassword(entity.getPassword());
-        dto.setRole(entity.getRole());
-        //dto.setStatus(entity.getStatus());
-        dto.setCreatedAt(entity.getCreatedAt());
-        dto.setUpdatedAt(entity.getUpdatedAt());
-        return dto;
-    }
-
-    @Override
-    public UserDTO createUser(UserDTO user) {
-        user.setId(generateUserId());
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        User saved = userRepository.save(dtoToEntity(user));
-        return entityToDTO(saved);
-    }
-
-    @Override
-    public UserDTO updateUser(UserDTO user) {
-        user.setUpdatedAt(LocalDateTime.now());
-        User updated = userRepository.update(dtoToEntity(user));
-        return entityToDTO(updated);
-    }
-
-    @Override
-    public UserDTO getUserById(String id) {
-        User entity = userRepository.findById(id);
-        return entity != null ? entityToDTO(entity) : null;
-    }
-
-    @Override
-    public ObservableList<UserDTO> getAllUsers() {
-        List<UserDTO> dtoList =  userRepository.findAll()
-                .stream()
-                .map(this::entityToDTO)
-                .collect(Collectors.toList());
-        return FXCollections.observableArrayList(dtoList);
-    }
-
-    @Override
-    public UserDTO getUserByUsername(String username) {
-        User entity = userRepository.findByUsername(username);
-        return entity != null ? entityToDTO(entity) : null;
-    }
-
 }

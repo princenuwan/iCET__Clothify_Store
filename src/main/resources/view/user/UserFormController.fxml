@@ -11,7 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #5A76A2;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.userController.UserFormController">
+<AnchorPane prefHeight="450.0"
+            prefWidth="400.0"
+            style="-fx-background-color: #5A76A2;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.user.UserFormController">
    <children>
       <BorderPane layoutY="7.0" prefHeight="450.0" prefWidth="400.0">
          <top>

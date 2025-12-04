@@ -1,4 +1,4 @@
-package controller.userController;
+package controller.user;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -11,7 +11,7 @@ import model.enums.Status;
 import service.UserService;
 import service.impl.UserServiceImpl;
 
-import java.util.Optional;
+import java.sql.SQLException;
 
 public class UserFormController {
 
@@ -68,39 +68,18 @@ public class UserFormController {
         btnDelete.setDisable(true);
     }
 
-
-    // For new user mode
-    public void setNewUserId(String id) {
-        txtUserId.setText(id);
-    }
-
     // Save (Add new)
     @FXML
     void btnAddOnAction(ActionEvent event) {
         try {
-            if (!validateFields()) return;
+            // Generate next user ID
+            String nextId = userService.generateNextUserId();
+            txtUserId.setText(nextId);
 
-            UserDTO newUser = new UserDTO();
-            newUser.setId(txtUserId.getText());
-            newUser.setFirstName(txtFirstName.getText());
-            newUser.setLastName(txtLastName.getText());
-            newUser.setUserName(txtUserName.getText());
-            newUser.setPassword(txtPassword.getText());
-            newUser.setRole(cbRole.getValue());
-            newUser.setStatus(cbStatus.getValue());
-
-            UserDTO savedUser = userService.createUser(newUser);
-
-            if (savedUser != null) {
-                if (parentController != null) {
-                    parentController.loadUserTable(); // refresh table
-                }
-                clearForm();
-                ((Stage) btnAddNew.getScene().getWindow()).close(); // auto close
-            }
-
-        } catch (Exception e) {
+            // Clear the name fields
+        } catch (SQLException e) {
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to generate new User ID").show();
         }
     }
 
@@ -197,6 +176,17 @@ public class UserFormController {
 
    @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        System.out.println("Delete");
+       String id = txtUserId.getText();   // get the already-loaded ID
+       userService.deleteUser(id);
+       Clear();
+
    }
+
+    public void setUserId(String id) {
+        txtUserId.setText(id);   // your textfield id
+    }
+
+    public void Clear(){
+        System.out.println("Clear");
+    }
 }

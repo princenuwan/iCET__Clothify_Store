@@ -14,6 +14,7 @@ import model.dto.UserDTO;
 import service.UserService;
 import service.impl.UserServiceImpl;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginFormController {
 
@@ -41,16 +42,27 @@ public class LoginFormController {
         }
 
         // Check user from DB
-        UserDTO user = userService.getUserByUsername(username); // You need to implement this in service & repository
-        if (user != null && user.getPassword().equals(password)) {
-            openDashboard(event);
-        } else {
+        try {
+            UserDTO user = userService.getUserByUsername(username);
+
+            if (user != null && user.getPassword().equals(password)) {
+                openDashboard(event);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login Failed");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid username or password. Please try again.");
+                alert.showAndWait();
+            }
+
+        } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Failed");
+            alert.setTitle("Database Error");
             alert.setHeaderText(null);
-            alert.setContentText("Invalid username or password. Please try again.");
+            alert.setContentText("Could not connect to database: " + e.getMessage());
             alert.showAndWait();
         }
+
     }
 
     private void openDashboard(ActionEvent event) {

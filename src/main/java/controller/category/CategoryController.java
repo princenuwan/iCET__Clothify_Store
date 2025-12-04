@@ -1,4 +1,4 @@
-package controller.categoryController;
+package controller.category;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

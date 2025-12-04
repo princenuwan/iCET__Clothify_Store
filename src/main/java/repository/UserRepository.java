@@ -1,25 +1,18 @@
 package repository;
 
 import model.entity.User;
-import java.util.List;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 // DB - CRUD
 public interface UserRepository{
-    // save user on database
-    User save(User user);
+    ResultSet getAll() throws SQLException;
 
-    // update user on database
-    User update(User user);
-
-    // Get all users from database
-    List<User> findAll();
-
-    // to get last userid from database
-    String getLastUserId();
-
-    // to find user by username from database
-    User findByUsername(String username);
-
-    // find user by id from database
-    User findById(String id);
+    void addUser(User entity) throws SQLException;
+    void deleteUser(String id) throws SQLException;
+    void updateUser(User entity) throws  SQLException;
+    ResultSet searchUser(String id) throws SQLException;
+    User findByUsername(String userName) throws SQLException;
+    String getLastId() throws SQLException;
 }

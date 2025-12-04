@@ -1,4 +1,4 @@
-package controller.userController;
+package controller.user;
 
 import db.DBConnection;
 import javafx.collections.FXCollections;
@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.dto.UserDTO;
 import model.enums.Roles;
@@ -333,19 +334,20 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void AddNewOnAction(ActionEvent event) {
+    void AddNewOnAction(ActionEvent event) throws SQLException{
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/user_form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/UserFormController.fxml"));
             Parent root = loader.load();
 
             UserFormController controller = loader.getController();
-            controller.setNewUserId(userService.generateUserId());
+            String nextUserId = userService.generateNextUserId();
+            controller.setUserId(nextUserId);
 
             stage.setScene(new Scene(root));
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -359,7 +361,7 @@ public class UserController implements Initializable {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/user_form.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/user/UserFormController.fxml"));
             Parent root = loader.load();
 
             // Get controller of the form
@@ -443,7 +445,7 @@ public class UserController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         tblUser.refresh();
     }
+
 }
